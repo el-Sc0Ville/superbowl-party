@@ -185,13 +185,13 @@
 </div>
 
 <div class="success-message" id="success-msg">
-    <h2>✅ Picks Locked In 🔒!</h2>
+    <h2>✅ Your Picks are Locked In 🔒!</h2>
     <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Thanks for being here with us 🤗!</br></p>
     <button onclick="location.reload()">Submit Another Entry</button>
 </div>
 
 <script>
-    // YOUR URL is already here:
+    // YOUR URL (I've kept your specific link here):
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyvS3rvvRFbPEpM1EAuiPPC25dO5-HBmpf0YatIuD6RW57e0vlPm2D6Y4-TQqMQrkSMRQ/exec';
     
     const form = document.forms['submit-to-google-sheet'];
@@ -201,24 +201,33 @@
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        
-        // 1. Show the loading text
+
+        // 1. SELECT THE BUTTON
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        // 2. DISABLE BUTTON & UPDATE TEXT (Stops the double-tap!)
+        submitButton.disabled = true;
+        submitButton.innerText = "Locking in...";
+
+        // 3. SHOW LOADING & SCROLL
         loading.style.display = 'block';
-        
-        // 2. FORCE SCROLL down to the loading text so they see it
         loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => {
-                // 3. Hide form, show success
                 loading.style.display = 'none';
                 formContainer.style.display = 'none';
                 successMsg.style.display = 'block';
-                
-                // 4. Scroll to the success message to confirm entry
                 successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
             })
-            .catch(error => console.error('Error!', error.message));
+            .catch(error => {
+                console.error('Error!', error.message);
+                // If it fails, re-enable the button so they can try again
+                submitButton.disabled = false;
+                submitButton.innerText = "Lock In My Picks";
+                loading.style.display = 'none';
+                alert("Something went wrong. Please try again!");
+            });
     });
 </script>
 
