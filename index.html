@@ -51,188 +51,186 @@
 <body>
 
 <div class="header">
-    <h1>6️⃣7️⃣ McNabb<br> Super Bowl Party 🏈🏟️</br></h1>
-    <p>Seahawks (🏆) vs. Patriots (🗑️)  • 💰Prop Bets🍀 </p>
+    <h1>6️⃣7️⃣ McNabb<br> Super Bowl Party 🏈🏟️</h1>
+    <p>Seahawks (🏆) vs. Patriots (🗑️) • 💰Prop Bets🍀</p>
 </div>
 
 <div class="container" id="form-container">
-    <form name="submit-to-google-sheet" novalidate>
-        
-        <div class="input-group">
-            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Your Name</label>
-            <input type="text" name="Name" placeholder="Enter your name" required>
-        </div>
-<div class="nav-buttons">
-    <button class="nav-btn active" onclick="showSection('picks')" id="btn-picks">My Picks</button>
-    <button class="nav-btn" onclick="loadLeaderboard()" id="btn-board">Leaderboard</button>
-</div>
-
-<div id="picks-view">
+    
+    <div class="nav-buttons">
+        <button type="button" class="nav-btn active" onclick="showSection('picks')" id="btn-picks">My Picks</button>
+        <button type="button" class="nav-btn" onclick="loadLeaderboard()" id="btn-board">Leaderboard</button>
     </div>
 
-<div id="leaderboard-view">
-    <div class="card" style="text-align: center;">
-        <h3>🏆 Live Standings</h3>
-        <p style="font-size: 0.9rem; opacity: 0.7;">Updates automatically</p>
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th style="width: 10%">#</th>
-                    <th>Name</th>
-                    <th style="text-align: right">Score</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body">
-                <tr><td colspan="3" style="text-align:center;">Loading scores...</td></tr>
-            </tbody>
-        </table>
-        <br>
-        <button onclick="loadLeaderboard()">🔄 Refresh Scores</button>
-    </div>
-</div>
-        
-        <div class="card">
-            <h3>1. National Anthem Length 🎙️(Charlie Puth)</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop1" value="Over 1m:55s" required><div class="radio-label">Over 1m:55s</div></label>
-                <label><input type="radio" name="Prop1" value="Under 1m:55s"><div class="radio-label">Under 1m:55s</div></label>
+    <div id="picks-view">
+        <form name="submit-to-google-sheet" novalidate>
+            
+            <div class="input-group">
+                <label style="font-weight: bold; display: block; margin-bottom: 8px;">Your Name</label>
+                <input type="text" name="Name" placeholder="Enter your name" required>
             </div>
-        </div>
-        
-        <div class="card">
-            <h3>2. Coin Toss Result 🪙</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop2" value="Heads" required><div class="radio-label">Heads</div></label>
-                <label><input type="radio" name="Prop2" value="Tails"><div class="radio-label">Tails</div></label>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h3>3. First Offensive Play of the Game 💨</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop3" value="Run" required><div class="radio-label">Run</div></label>
-                <label><input type="radio" name="Prop3" value="Pass"><div class="radio-label">Pass</div></label>
-            </div>
-        </div>
 
-        <div class="card">
-            <h3>4. Which QB throws first TD 🎯?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop4" value="Sam Darnold (SEA)" required><div class="radio-label">Sam Darnold (SEA)</div></label>
-                <label><input type="radio" name="Prop4" value="Drake Maye (NE)"><div class="radio-label">Drake Maye (NE)</div></label>
-                <label><input type="radio" name="Prop4" value="Neither/Other"><div class="radio-label">Neither / Other</div></label>
+            <div class="card">
+                <h3>1. National Anthem Length 🎙️(Charlie Puth)</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop1" value="Over 1m:55s" required><div class="radio-label">Over 1m:55s</div></label>
+                    <label><input type="radio" name="Prop1" value="Under 1m:55s"><div class="radio-label">Under 1m:55s</div></label>
+                </div>
             </div>
-        </div>
+            
+            <div class="card">
+                <h3>2. Coin Toss Result 🪙</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop2" value="Heads" required><div class="radio-label">Heads</div></label>
+                    <label><input type="radio" name="Prop2" value="Tails"><div class="radio-label">Tails</div></label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>3. First Offensive Play of the Game 💨</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop3" value="Run" required><div class="radio-label">Run</div></label>
+                    <label><input type="radio" name="Prop3" value="Pass"><div class="radio-label">Pass</div></label>
+                </div>
+            </div>
 
-         <div class="card">
-            <h3>5. Will Seattle attempt a pass from the 1-yard line?</h3>
-            <p style="font-size:0.8rem; color:#666;">(The PTSD Special 🤮)</p>
-            <div class="options">
-                <label><input type="radio" name="Prop5" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop5" value="No"><div class="radio-label">No</div></label>
+            <div class="card">
+                <h3>4. Which QB throws first TD 🎯?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop4" value="Sam Darnold (SEA)" required><div class="radio-label">Sam Darnold (SEA)</div></label>
+                    <label><input type="radio" name="Prop4" value="Drake Maye (NE)"><div class="radio-label">Drake Maye (NE)</div></label>
+                    <label><input type="radio" name="Prop4" value="Neither/Other"><div class="radio-label">Neither / Other</div></label>
+                </div>
             </div>
-        </div>
-        
-        <div class="card">
-            <h3>6. Will there be an interception in the 1st Half ⛔?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop6" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop6" value="No"><div class="radio-label">No</div></label>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h3>7. Halftime: Will Bad Bunny wear sunglasses at the start 😎?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop7" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop7" value="No"><div class="radio-label">No</div></label>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h3>8. Halftime: Bad Bunny's First Song 🎶?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop8" value="Monaco" required><div class="radio-label">Monaco</div></label>
-                <label><input type="radio" name="Prop8" value="I Like It"><div class="radio-label">I Like It</div></label>
-                <label><input type="radio" name="Prop8" value="Tití Me Preguntó"><div class="radio-label">Tití Me Preguntó</div></label>
-                <label><input type="radio" name="Prop8" value="Other"><div class="radio-label">Other</div></label>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h3>9. Kicking: Will a field goal or extra point (XP) hit the uprights 🥅 (doink)?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop9" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop9" value="No"><div class="radio-label">No</div></label>
-            </div>
-        </div>     
-        
-        <div class="card">
-            <h3>10. Challenge: Will a coach lose a challenge flag 🚩?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop10" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop10" value="No"><div class="radio-label">No</div></label>
-            </div>
-        </div>     
-        
-        <div class="card">
-            <h3>11. Special Teams/Defense: Will a special teams or defensive points be scored 🪄?</h3>
-            <p style="font-size:0.8rem; color:#666;">(Pick-6, Punt Return, Safety)</p>
-            <div class="options">
-                <label><input type="radio" name="Prop11" value="Yes" required><div class="radio-label">Yes</div></label>
-                <label><input type="radio" name="Prop11" value="No"><div class="radio-label">No</div></label>
-            </div>
-        </div>     
-        
-        <div class="card">
-            <h3>12. Big Play🧨: Longest TD of the game: Over/Under 40.5 yards.</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop12" value="Over" required><div class="radio-label">Over</div></label>
-                <label><input type="radio" name="Prop12" value="Under"><div class="radio-label">Under</div></label>
-            </div>
-        </div>        
-        
-        <div class="card">
-            <h3>13. Coach Cam: Who gets shown angry first 🤬?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop13" value="Mike Macdonald (SEA)" required><div class="radio-label">Mike Macdonald (SEA)</div></label>
-                <label><input type="radio" name="Prop13" value="Mike Vrabel (NE)"><div class="radio-label">Mike Vrabel (NE)</div></label>
-            </div>
-        </div>        
-        
-        <div class="card">
-            <h3>14. Gatorade Bath Color 💦</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop14" value="Blue" required><div class="radio-label">Blue</div></label>
-                <label><input type="radio" name="Prop14" value="Orange"><div class="radio-label">Orange</div></label>
-                <label><input type="radio" name="Prop14" value="Clear/Water"><div class="radio-label">Clear / Water</div></label>
-                <label><input type="radio" name="Prop14" value="Red/Pink"><div class="radio-label">Red / Pink</div></label>
-            </div>
-        </div>
-                
-        <div class="card">
-            <h3>15. Score: Will the total score be Even or Odd?</h3>
-            <div class="options">
-                <label><input type="radio" name="Prop15" value="Even" required><div class="radio-label">Even</div></label>
-                <label><input type="radio" name="Prop15" value="Odd"><div class="radio-label">Odd</div></label>
-            </div>
-        </div>
-        
-        <div class="card" style="border-left-color: var(--accent);">
-            <h3>Tiebreaker: Total Combined Points ➕?</h3>
-            <input type="number" name="Tiebreaker" placeholder="e.g. 45" required>
-        </div>
 
-        <button type="submit">Lock In My Picks</button>
-    </form>
-    <div class="loading">Submitting your picks...</div>
-</div>
+             <div class="card">
+                <h3>5. Will Seattle attempt a pass from the 1-yard line?</h3>
+                <p style="font-size:0.8rem; color:#666;">(The PTSD Special 🤮)</p>
+                <div class="options">
+                    <label><input type="radio" name="Prop5" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop5" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>6. Will there be an interception in the 1st Half ⛔?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop6" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop6" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>7. Halftime: Will Bad Bunny wear sunglasses at the start 😎?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop7" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop7" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>8. Halftime: Bad Bunny's First Song 🎶?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop8" value="Monaco" required><div class="radio-label">Monaco</div></label>
+                    <label><input type="radio" name="Prop8" value="I Like It"><div class="radio-label">I Like It</div></label>
+                    <label><input type="radio" name="Prop8" value="Tití Me Preguntó"><div class="radio-label">Tití Me Preguntó</div></label>
+                    <label><input type="radio" name="Prop8" value="Other"><div class="radio-label">Other</div></label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>9. Kicking: Will a field goal or extra point (XP) hit the uprights 🥅 (doink)?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop9" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop9" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>      
+            
+            <div class="card">
+                <h3>10. Challenge: Will a coach lose a challenge flag 🚩?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop10" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop10" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>      
+            
+            <div class="card">
+                <h3>11. Special Teams/Defense: Will a special teams or defensive points be scored 🪄?</h3>
+                <p style="font-size:0.8rem; color:#666;">(Pick-6, Punt Return, Safety)</p>
+                <div class="options">
+                    <label><input type="radio" name="Prop11" value="Yes" required><div class="radio-label">Yes</div></label>
+                    <label><input type="radio" name="Prop11" value="No"><div class="radio-label">No</div></label>
+                </div>
+            </div>      
+            
+            <div class="card">
+                <h3>12. Big Play🧨: Longest TD of the game: Over/Under 40.5 yards.</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop12" value="Over" required><div class="radio-label">Over</div></label>
+                    <label><input type="radio" name="Prop12" value="Under"><div class="radio-label">Under</div></label>
+                </div>
+            </div>        
+            
+            <div class="card">
+                <h3>13. Coach Cam: Who gets shown angry first 🤬?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop13" value="Mike Macdonald (SEA)" required><div class="radio-label">Mike Macdonald (SEA)</div></label>
+                    <label><input type="radio" name="Prop13" value="Mike Vrabel (NE)"><div class="radio-label">Mike Vrabel (NE)</div></label>
+                </div>
+            </div>        
+            
+            <div class="card">
+                <h3>14. Gatorade Bath Color 💦</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop14" value="Blue" required><div class="radio-label">Blue</div></label>
+                    <label><input type="radio" name="Prop14" value="Orange"><div class="radio-label">Orange</div></label>
+                    <label><input type="radio" name="Prop14" value="Clear/Water"><div class="radio-label">Clear / Water</div></label>
+                    <label><input type="radio" name="Prop14" value="Red/Pink"><div class="radio-label">Red / Pink</div></label>
+                </div>
+            </div>
+                    
+            <div class="card">
+                <h3>15. Score: Will the total score be Even or Odd?</h3>
+                <div class="options">
+                    <label><input type="radio" name="Prop15" value="Even" required><div class="radio-label">Even</div></label>
+                    <label><input type="radio" name="Prop15" value="Odd"><div class="radio-label">Odd</div></label>
+                </div>
+            </div>
+            
+            <div class="card" style="border-left-color: var(--accent);">
+                <h3>Tiebreaker: Total Combined Points ➕?</h3>
+                <input type="number" name="Tiebreaker" placeholder="e.g. 45" required>
+            </div>
+
+            <button type="submit">Lock In My Picks</button>
+        </form>
+        <div class="loading">Submitting your picks...</div>
+    </div> <div id="leaderboard-view">
+        <div class="card" style="text-align: center;">
+            <h3>🏆 Live Standings</h3>
+            <p style="font-size: 0.9rem; opacity: 0.7;">Updates automatically</p>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">#</th>
+                        <th>Name</th>
+                        <th style="text-align: right">Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <tr><td colspan="3" style="text-align:center;">Loading scores...</td></tr>
+                </tbody>
+            </table>
+            <br>
+            <button onclick="loadLeaderboard()">🔄 Refresh Scores</button>
+        </div>
+    </div> </div>
 
 <div class="success-message" id="success-msg">
     <h2>✅ Your Picks are Locked In 🔒!</h2>
-    <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Thanks for being here with us 🤗!</br></p>
-    <br> <p> Please send your Interac e-transfer to 'pat.normandin@gmail.com' </br></p>
-    <button onclick="location.reload()">Submit Another Entry</button>
+    <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Thanks for being here with us 🤗!</p>
+    <br> <p> Please send your Interac e-transfer to 'pat.normandin@gmail.com' </p>
+    <button onclick="location.reload()">Go Back to Entry form</button>
 </div>
 
 <script>
@@ -289,11 +287,9 @@
         // IF ERRORS FOUND: Scroll to the first one and STOP.
         if (firstInvalid) {
             firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Optional: Shake effect or alert could go here, but the red is usually enough
             return; // STOP HERE. Do not send to Google.
         }
         // --- VALIDATION END ---
-
 
         // If we get here, everything is perfect. Proceed with submission.
         const submitButton = form.querySelector('button[type="submit"]');
@@ -318,6 +314,7 @@
                 alert("Something went wrong. Please try again!");
             });
     });
+
 // Function to toggle between views
 function showSection(section) {
     document.getElementById('picks-view').style.display = section === 'picks' ? 'block' : 'none';
@@ -333,24 +330,17 @@ function loadLeaderboard() {
     const tbody = document.getElementById('leaderboard-body');
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Fetching live scores...</td></tr>';
 
-    fetch(scriptURL) // It uses the same URL as your POST!
+    fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
-            // Data is an array of arrays (rows)
-            // Row 0 = Headers, Row 1 = Answer Key, Row 2 = Insights
-            // We want Row 3 onwards (Indices 3, 4, 5...)
-            
             // Slice the array to get only guests (adjust index if your sheet layout is different!)
-            // Based on your last screenshot, guests start at Index 3 (Row 4)
             let guests = data.slice(3); 
             
-            // Map to objects for easier sorting: [Name, Score] -> {name: "Patty-O", score: 0}
-            // Column 0 is Name, Column 1 is Score (based on your TV View)
             let players = guests.map(row => {
                 return { name: row[0], score: row[1] === "" ? 0 : row[1] };
             });
 
-            // Remove empty rows (in case you pulled 100 rows)
+            // Remove empty rows
             players = players.filter(p => p.name && p.name !== "");
 
             // SORT by Score (High to Low)
