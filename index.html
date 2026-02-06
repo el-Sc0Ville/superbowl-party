@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Bowl LX Prop Bets</title>
+    <style>
+        :root { --primary: #002244; --secondary: #69BE28; --accent: #C60C30; --bg: #f4f4f4; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; }
+        .header { background: linear-gradient(135deg, #002244 0%, #00152A 100%); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--secondary); }
+        .card h3 { margin-top: 0; margin-bottom: 10px; font-size: 1.1rem; }
+        
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .radio-label { display: flex; align-items: center; padding: 12px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .radio-label:hover { background-color: #f9f9f9; }
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + .radio-label { border-color: var(--primary); background-color: #e6f0ff; color: var(--primary); font-weight: bold; }
+        
+        .input-group { margin-bottom: 20px; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        
+        button { background-color: var(--secondary); color: white; border: none; padding: 15px 30px; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.1s; }
+        button:active { transform: scale(0.98); }
+        
+        .loading { display: none; text-align: center; margin-top: 20px; }
+        .success-message { display: none; text-align: center; padding: 40px; }
+        .success-message h2 { color: var(--secondary); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Super Bowl LX</h1>
+    <p>Seahawks vs. Patriots • Feb 8, 2026</p>
+</div>
+
+<div class="container" id="form-container">
+    <form name="submit-to-google-sheet">
+        
+        <div class="input-group">
+            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Your Name</label>
+            <input type="text" name="Name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="card">
+            <h3>1. Coin Toss Result</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop1" value="Heads" required><div class="radio-label">Heads</div></label>
+                <label><input type="radio" name="Prop1" value="Tails"><div class="radio-label">Tails</div></label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>2. National Anthem Length (Charlie Puth)</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop2" value="Over 1:55" required><div class="radio-label">Over 1:55</div></label>
+                <label><input type="radio" name="Prop2" value="Under 1:55"><div class="radio-label">Under 1:55</div></label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>3. First Offensive Play of the Game</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop3" value="Run" required><div class="radio-label">Run</div></label>
+                <label><input type="radio" name="Prop3" value="Pass"><div class="radio-label">Pass</div></label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>4. Which QB throws first TD?</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop4" value="Sam Darnold (SEA)" required><div class="radio-label">Sam Darnold (SEA)</div></label>
+                <label><input type="radio" name="Prop4" value="Drake Maye (NE)"><div class="radio-label">Drake Maye (NE)</div></label>
+                <label><input type="radio" name="Prop4" value="Neither/Other"><div class="radio-label">Neither / Other</div></label>
+            </div>
+        </div>
+
+         <div class="card">
+            <h3>5. Will Seattle attempt a pass from the 1-yard line?</h3>
+            <p style="font-size:0.8rem; color:#666;">(The PTSD Special)</p>
+            <div class="options">
+                <label><input type="radio" name="Prop5" value="Yes" required><div class="radio-label">Yes</div></label>
+                <label><input type="radio" name="Prop5" value="No"><div class="radio-label">No</div></label>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>6. Halftime: Bad Bunny's First Song?</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop6" value="Monaco" required><div class="radio-label">Monaco</div></label>
+                <label><input type="radio" name="Prop6" value="I Like It"><div class="radio-label">I Like It</div></label>
+                <label><input type="radio" name="Prop6" value="Tití Me Preguntó"><div class="radio-label">Tití Me Preguntó</div></label>
+                <label><input type="radio" name="Prop6" value="Other"><div class="radio-label">Other</div></label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>7. Gatorade Bath Color</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop7" value="Blue" required><div class="radio-label">Blue</div></label>
+                <label><input type="radio" name="Prop7" value="Orange"><div class="radio-label">Orange</div></label>
+                <label><input type="radio" name="Prop7" value="Clear/Water"><div class="radio-label">Clear / Water</div></label>
+                <label><input type="radio" name="Prop7" value="Red/Pink"><div class="radio-label">Red / Pink</div></label>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>8. Total Interceptions (Both Teams)</h3>
+            <div class="options">
+                <label><input type="radio" name="Prop8" value="Over 1.5" required><div class="radio-label">Over 1.5</div></label>
+                <label><input type="radio" name="Prop8" value="Under 1.5"><div class="radio-label">Under 1.5</div></label>
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: var(--accent);">
+            <h3>Tiebreaker: Total Combined Points?</h3>
+            <input type="number" name="Tiebreaker" placeholder="e.g. 45" required>
+        </div>
+
+        <button type="submit">Lock In My Picks</button>
+    </form>
+    <div class="loading">Submitting your picks...</div>
+</div>
+
+<div class="success-message" id="success-msg">
+    <h2>🏈 Picks Locked In!</h2>
+    <p>Good luck! Enjoy the game.</p>
+    <button onclick="location.reload()">Submit Another Entry</button>
+</div>
+
+<script>
+    // PASTE YOUR GOOGLE SCRIPT URL BETWEEN THE QUOTES BELOW
+    const scriptURL = https://script.google.com/macros/s/AKfycbyvS3rvvRFbPEpM1EAuiPPC25dO5-HBmpf0YatIuD6RW57e0vlPm2D6Y4-TQqMQrkSMRQ/exec;
+    
+    const form = document.forms['submit-to-google-sheet'];
+    const loading = document.querySelector('.loading');
+    const successMsg = document.querySelector('.success-message');
+    const formContainer = document.getElementById('form-container');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        loading.style.display = 'block';
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                loading.style.display = 'none';
+                formContainer.style.display = 'none';
+                successMsg.style.display = 'block';
+            })
+            .catch(error => console.error('Error!', error.message));
+    });
+</script>
+
+</body>
+</html>
