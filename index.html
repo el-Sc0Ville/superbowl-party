@@ -30,6 +30,22 @@
         .loading { display: none; text-align: center; margin-top: 20px; }
         .success-message { display: none; text-align: center; padding: 40px; }
         .success-message h2 { color: var(--secondary); }
+        
+/* Leaderboard Styles */
+        .nav-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { background: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; flex: 1; cursor: pointer; }
+        .nav-btn.active { background: var(--secondary); color: white; }
+
+#leaderboard-view { display: none; } /* Hidden by default */
+
+        .leaderboard-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .leaderboard-table th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+        .leaderboard-table td { padding: 12px; border-bottom: 1px solid #eee; }
+        .leaderboard-table tr:last-child td { border-bottom: none; }
+        .rank-1 { background-color: #FFF8E1; border-left: 5px solid #FFD700; } /* Gold */
+        .rank-2 { border-left: 5px solid #C0C0C0; } /* Silver */
+        .rank-3 { border-left: 5px solid #CD7F32; } /* Bronze */
+        .score-cell { font-weight: bold; font-size: 1.1rem; color: var(--secondary); text-align: right; }
     </style>
 </head>
 <body>
@@ -46,6 +62,34 @@
             <label style="font-weight: bold; display: block; margin-bottom: 8px;">Your Name</label>
             <input type="text" name="Name" placeholder="Enter your name" required>
         </div>
+<div class="nav-buttons">
+    <button class="nav-btn active" onclick="showSection('picks')" id="btn-picks">My Picks</button>
+    <button class="nav-btn" onclick="loadLeaderboard()" id="btn-board">Leaderboard</button>
+</div>
+
+<div id="picks-view">
+    </div>
+
+<div id="leaderboard-view">
+    <div class="card" style="text-align: center;">
+        <h3>🏆 Live Standings</h3>
+        <p style="font-size: 0.9rem; opacity: 0.7;">Updates automatically</p>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%">#</th>
+                    <th>Name</th>
+                    <th style="text-align: right">Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <tr><td colspan="3" style="text-align:center;">Loading scores...</td></tr>
+            </tbody>
+        </table>
+        <br>
+        <button onclick="loadLeaderboard()">🔄 Refresh Scores</button>
+    </div>
+</div>
         
         <div class="card">
             <h3>1. National Anthem Length 🎙️(Charlie Puth)</h3>
@@ -187,6 +231,7 @@
 <div class="success-message" id="success-msg">
     <h2>✅ Your Picks are Locked In 🔒!</h2>
     <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Thanks for being here with us 🤗!</br></p>
+    <br> <p> Please send your Interac e-transfer to 'pat.normandin@gmail.com' </br></p>
     <button onclick="location.reload()">Submit Another Entry</button>
 </div>
 
@@ -273,6 +318,67 @@
                 alert("Something went wrong. Please try again!");
             });
     });
+// Function to toggle between views
+function showSection(section) {
+    document.getElementById('picks-view').style.display = section === 'picks' ? 'block' : 'none';
+    document.getElementById('leaderboard-view').style.display = section === 'board' ? 'block' : 'none';
+    
+    document.getElementById('btn-picks').className = section === 'picks' ? 'nav-btn active' : 'nav-btn';
+    document.getElementById('btn-board').className = section === 'board' ? 'nav-btn active' : 'nav-btn';
+}
+
+// Function to fetch and render the leaderboard
+function loadLeaderboard() {
+    showSection('board');
+    const tbody = document.getElementById('leaderboard-body');
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Fetching live scores...</td></tr>';
+
+    fetch(scriptURL) // It uses the same URL as your POST!
+        .then(response => response.json())
+        .then(data => {
+            // Data is an array of arrays (rows)
+            // Row 0 = Headers, Row 1 = Answer Key, Row 2 = Insights
+            // We want Row 3 onwards (Indices 3, 4, 5...)
+            
+            // Slice the array to get only guests (adjust index if your sheet layout is different!)
+            // Based on your last screenshot, guests start at Index 3 (Row 4)
+            let guests = data.slice(3); 
+            
+            // Map to objects for easier sorting: [Name, Score] -> {name: "Patty-O", score: 0}
+            // Column 0 is Name, Column 1 is Score (based on your TV View)
+            let players = guests.map(row => {
+                return { name: row[0], score: row[1] === "" ? 0 : row[1] };
+            });
+
+            // Remove empty rows (in case you pulled 100 rows)
+            players = players.filter(p => p.name && p.name !== "");
+
+            // SORT by Score (High to Low)
+            players.sort((a, b) => b.score - a.score);
+
+            // Render Table
+            tbody.innerHTML = '';
+            players.forEach((player, index) => {
+                let rankClass = '';
+                if (index === 0) rankClass = 'rank-1';
+                if (index === 1) rankClass = 'rank-2';
+                if (index === 2) rankClass = 'rank-3';
+
+                const row = `
+                    <tr class="${rankClass}">
+                        <td>${index + 1}</td>
+                        <td style="font-weight:500">${player.name}</td>
+                        <td class="score-cell">${player.score}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            tbody.innerHTML = '<tr><td colspan="3">Error loading scores. Try again.</td></tr>';
+        });
+}   
 </script>
 
 </body>
