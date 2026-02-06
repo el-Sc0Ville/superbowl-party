@@ -185,13 +185,13 @@
 </div>
 
 <div class="success-message" id="success-msg">
-    <h2>🏈 Picks Locked In!</h2>
-    <p>Good luck! Enjoy the game.</p>
+    <h2>✅ Picks Locked In 🔒!</h2>
+    <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Thanks for being here with us 🤗!</br></p>
     <button onclick="location.reload()">Submit Another Entry</button>
 </div>
 
 <script>
-    // PASTE YOUR GOOGLE SCRIPT URL BETWEEN THE QUOTES BELOW
+    // YOUR URL is already here:
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyvS3rvvRFbPEpM1EAuiPPC25dO5-HBmpf0YatIuD6RW57e0vlPm2D6Y4-TQqMQrkSMRQ/exec';
     
     const form = document.forms['submit-to-google-sheet'];
@@ -201,12 +201,22 @@
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+        
+        // 1. Show the loading text
         loading.style.display = 'block';
+        
+        // 2. FORCE SCROLL down to the loading text so they see it
+        loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => {
+                // 3. Hide form, show success
                 loading.style.display = 'none';
                 formContainer.style.display = 'none';
                 successMsg.style.display = 'block';
+                
+                // 4. Scroll to the success message to confirm entry
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
             })
             .catch(error => console.error('Error!', error.message));
     });
