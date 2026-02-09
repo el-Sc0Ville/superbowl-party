@@ -1,389 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Bowl LX Prop Bets</title>
-    <style>
-        :root { --primary: #002244; --secondary: #69BE28; --accent: #C60C30; --bg: #f4f4f4; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; }
-        .header { background: linear-gradient(135deg, #002244 0%, #00152A 100%); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
-        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        
-        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--secondary); }
-        .card h3 { margin-top: 0; margin-bottom: 10px; font-size: 1.1rem; }
-        
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        .radio-label { display: flex; align-items: center; padding: 12px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .radio-label:hover { background-color: #f9f9f9; }
-        input[type="radio"] { display: none; }
-        input[type="radio"]:checked + .radio-label { border-color: var(--primary); background-color: #e6f0ff; color: var(--primary); font-weight: bold; }
-        
-        .input-group { margin-bottom: 20px; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-        
-        button { background-color: var(--secondary); color: white; border: none; padding: 15px 30px; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.1s; }
-        button:active { transform: scale(0.98); }
-        
-        .loading { display: none; text-align: center; margin-top: 20px; }
-        .success-message { display: none; text-align: center; padding: 40px; }
-        .success-message h2 { color: var(--secondary); }
-        
-/* Leaderboard Styles */
-        .nav-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-        .nav-btn { background: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; flex: 1; cursor: pointer; }
-        .nav-btn.active { background: var(--secondary); color: white; }
-
-#leaderboard-view { display: none; } /* Hidden by default */
-
-        .leaderboard-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .leaderboard-table th { background: var(--primary); color: white; padding: 12px; text-align: left; }
-        .leaderboard-table td { padding: 12px; border-bottom: 1px solid #eee; }
-        .leaderboard-table tr:last-child td { border-bottom: none; }
-        .rank-1 { background-color: #FFF8E1; border-left: 5px solid #FFD700; } /* Gold */
-        .rank-2 { border-left: 5px solid #C0C0C0; } /* Silver */
-        .rank-3 { border-left: 5px solid #CD7F32; } /* Bronze */
-        .score-cell { font-weight: bold; font-size: 1.1rem; color: var(--secondary); text-align: right; }
-    </style>
-</head>
-<body>
-
-<div class="header">
-    <h1>6️⃣7️⃣ McNabb<br> Super Bowl Party 🏈🏟️</h1>
-    <p>Seahawks (🏆) vs. Patriots (🗑️) • 💰Prop Bets🍀</p>
-</div>
-
-<div class="container" id="form-container">
-    
-    <div class="nav-buttons">
-        <button type="button" class="nav-btn active" onclick="showSection('picks')" id="btn-picks">My Picks</button>
-        <button type="button" class="nav-btn" onclick="loadLeaderboard()" id="btn-board">Leaderboard</button>
-    </div>
-
-    <div id="picks-view">
-        <form name="submit-to-google-sheet" novalidate>
-            
-            <div class="input-group">
-                <label style="font-weight: bold; display: block; margin-bottom: 8px;">Your Name</label>
-                <input type="text" name="Name" placeholder="Committing to 10$ entry fee" required>
-            </div>
-
-            <div class="card">
-                <h3>1. National Anthem Length 🎙️(Charlie Puth)</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop1" value="Over 1m:55s" required><div class="radio-label">Over 1m:55s</div></label>
-                    <label><input type="radio" name="Prop1" value="Under 1m:55s"><div class="radio-label">Under 1m:55s</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>2. Coin Toss Result 🪙</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop2" value="Heads" required><div class="radio-label">Heads</div></label>
-                    <label><input type="radio" name="Prop2" value="Tails"><div class="radio-label">Tails</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>3. First Offensive Play of the Game 💨</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop3" value="Run" required><div class="radio-label">Run</div></label>
-                    <label><input type="radio" name="Prop3" value="Pass"><div class="radio-label">Pass</div></label>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>4. Which QB throws first TD 🎯?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop4" value="Sam Darnold (SEA)" required><div class="radio-label">Sam Darnold (SEA)</div></label>
-                    <label><input type="radio" name="Prop4" value="Drake Maye (NE)"><div class="radio-label">Drake Maye (NE)</div></label>
-                    <label><input type="radio" name="Prop4" value="Neither/Other"><div class="radio-label">Neither / Other</div></label>
-                </div>
-            </div>
-
-             <div class="card">
-                <h3>5. Will Seattle attempt a pass from the 1-yard line?</h3>
-                <p style="font-size:0.8rem; color:#666;">(The PTSD Special 🤮)</p>
-                <div class="options">
-                    <label><input type="radio" name="Prop5" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop5" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>6. Will there be an interception in the 1st Half ⛔?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop6" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop6" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>7. Halftime: Will Bad Bunny wear sunglasses at the start 😎?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop7" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop7" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>8. Halftime: Bad Bunny's First Song 🎶?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop8" value="Monaco" required><div class="radio-label">Monaco</div></label>
-                    <label><input type="radio" name="Prop8" value="I Like It"><div class="radio-label">I Like It</div></label>
-                    <label><input type="radio" name="Prop8" value="Tití Me Preguntó"><div class="radio-label">Tití Me Preguntó</div></label>
-                    <label><input type="radio" name="Prop8" value="Other"><div class="radio-label">Other</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>9. Kicking: Will a field goal or extra point (XP) hit the uprights 🥅 (doink)?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop9" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop9" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>      
-            
-            <div class="card">
-                <h3>10. Challenge: Will a coach lose a challenge flag 🚩?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop10" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop10" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>      
-            
-            <div class="card">
-                <h3>11. Special Teams/Defense: Will a special teams or defensive points be scored 🪄?</h3>
-                <p style="font-size:0.8rem; color:#666;">(Pick-6, Punt Return, Safety)</p>
-                <div class="options">
-                    <label><input type="radio" name="Prop11" value="Yes" required><div class="radio-label">Yes</div></label>
-                    <label><input type="radio" name="Prop11" value="No"><div class="radio-label">No</div></label>
-                </div>
-            </div>      
-            
-            <div class="card">
-                <h3>12. Big Play🧨: Longest TD of the game: Over/Under 40.5 yards.</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop12" value="Over" required><div class="radio-label">Over</div></label>
-                    <label><input type="radio" name="Prop12" value="Under"><div class="radio-label">Under</div></label>
-                </div>
-            </div>        
-            
-            <div class="card">
-                <h3>13. Coach Cam: Who gets shown angry first 🤬?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop13" value="Mike Macdonald (SEA)" required><div class="radio-label">Mike Macdonald (SEA)</div></label>
-                    <label><input type="radio" name="Prop13" value="Mike Vrabel (NE)"><div class="radio-label">Mike Vrabel (NE)</div></label>
-                </div>
-            </div>        
-            
-            <div class="card">
-                <h3>14. Gatorade Bath Color 💦</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop14" value="Blue" required><div class="radio-label">Blue</div></label>
-                    <label><input type="radio" name="Prop14" value="Orange"><div class="radio-label">Orange</div></label>
-                    <label><input type="radio" name="Prop14" value="Clear/Water"><div class="radio-label">Clear / Water</div></label>
-                    <label><input type="radio" name="Prop14" value="Red/Pink"><div class="radio-label">Red / Pink</div></label>
-                </div>
-            </div>
-                    
-            <div class="card">
-                <h3>15. Score: Will the total score be Even or Odd?</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop15" value="Even" required><div class="radio-label">Even</div></label>
-                    <label><input type="radio" name="Prop15" value="Odd"><div class="radio-label">Odd</div></label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>16. Super Bowl LV Winner 🏆</h3>
-                <div class="options">
-                    <label><input type="radio" name="Prop16" value="A glorious Seahawks victory" required><div class="radio-label">A glorious Seahawks victory 🐐</div></label>
-                    <label><input type="radio" name="Prop16" value="A fluke Patriots win"><div class="radio-label">A fluke Patriots 🤡 win</div></label>
-                </div>
-            </div>            
-            
-            <div class="card" style="border-left-color: var(--accent);">
-                <h3>Tiebreaker: Total Combined Points ➕?</h3>
-                <input type="number" name="Tiebreaker" placeholder="e.g. 45" required>
-            </div>
-
-            <button type="submit">Lock In My Picks (10$ Entry) </button>
-        </form>
-        <div class="loading">Submitting your picks...<br> Get ready to pay your entry </br> </div>
-    </div> <div id="leaderboard-view">
-        <div class="card" style="text-align: center;">
-            <h3>🏆 Live Standings</h3>
-<p style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; border: 1px solid #ffeeba;">
-            <strong>Bets are now closed!</strong> 🚫<br>
-            You can view everyone's picks in the 
-            <a href="https://docs.google.com/spreadsheets/d/1nu9KZnR6ohVlv8gufZmq5BYL22nd4dRilpEI5Dd5h-w/edit?usp=sharing" target="_blank" style="text-decoration: underline; color: #002244; font-weight: bold;">
-                Master Sheet here
-            </a>.
-        </p>
-            <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th style="width: 10%">#</th>
-                        <th>Name</th>
-                        <th style="text-align: right">Score</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboard-body">
-                    <tr><td colspan="3" style="text-align:center;">Loading scores...</td></tr>
-                </tbody>
-            </table>
-            <br>
-            <button onclick="loadLeaderboard()">🔄 Refresh Scores</button>
-        </div>
-    </div> </div>
-
-<div class="success-message" id="success-msg">
-    <h2>✅ Your Picks are Locked In 🔒!</h2>
-    <p>Good luck! Enjoy the game and good company 🫶🏻.<br>Entry fees must be sent before the start of the Anthem 🏁</p>
-    <br> <p> Please send your Interac e-transfer to 'pat.normandin@gmail.com'. Include your nickname in the Notes section of the transfer so I can track down the winner! </p>
-    <button onclick="location.reload()">Back to Form / Live Leaderboard</button>
-</div>
-
 <script>
+    // YOUR EXISTING SCRIPT URL (No change needed here)
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyvS3rvvRFbPEpM1EAuiPPC25dO5-HBmpf0YatIuD6RW57e0vlPm2D6Y4-TQqMQrkSMRQ/exec';
-    
-    const form = document.forms['submit-to-google-sheet'];
-    const loading = document.querySelector('.loading');
-    const successMsg = document.querySelector('.success-message');
-    const formContainer = document.getElementById('form-container');
 
-    form.addEventListener('submit', e => {
-        e.preventDefault();
+    function showSection(section) {
+        document.getElementById('leaderboard-view').style.display = section === 'leaderboard' ? 'block' : 'none';
+        document.getElementById('answers-view').style.display = section === 'answers' ? 'block' : 'none';
+        
+        document.getElementById('btn-board').className = section === 'leaderboard' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('btn-answers').className = section === 'answers' ? 'nav-btn active' : 'nav-btn';
+    }
 
-        // --- CUSTOM VALIDATION START ---
-        let firstInvalid = null;
+    function loadData() {
+        fetch(scriptURL)
+            .then(response => response.json())
+            .then(data => {
+                const headers = data[0];
+                const answers = data[1]; // The 'Answer Key' row
+                const guests = data.slice(3); // Guests start at Row 4 (index 3)
 
-        // 1. Check Name
-        const nameInput = form.elements['Name'];
-        if (!nameInput.value.trim()) {
-            nameInput.style.border = "3px solid #C60C30"; // Red border
-            if (!firstInvalid) firstInvalid = nameInput;
-        } else {
-            nameInput.style.border = "2px solid #ddd"; // Reset to normal
-        }
+                // --- 1. BUILD LEADERBOARD ---
+                let players = guests.map(row => {
+                    // Column A (0) is Name, Column B (1) is Score
+                    return { name: row[0], score: row[1] === "" ? 0 : row[1] };
+                });
+                
+                players = players.filter(p => p.name && p.name !== "");
+                players.sort((a, b) => b.score - a.score);
 
-        // 2. Check all 15 Props
-        for (let i = 1; i <= 15; i++) {
-            const propName = 'Prop' + i;
-            const radioGroup = form.elements[propName];
-            const card = radioGroup[0].closest('.card'); // Find the card container
-            
-            if (radioGroup.value === "") { // If nothing selected
-                card.style.borderLeft = "5px solid #C60C30"; // Turn side bar RED
-                card.style.backgroundColor = "#fff0f0"; // Light red background tint
-                if (!firstInvalid) firstInvalid = card;
-            } else {
-                card.style.borderLeft = "5px solid #69BE28"; // Reset to Green
-                card.style.backgroundColor = "white"; 
-            }
-        }
+                const tbody = document.getElementById('leaderboard-body');
+                tbody.innerHTML = '';
+                
+                players.forEach((player, index) => {
+                    let rankClass = '';
+                    if (index === 0) rankClass = 'rank-1';
+                    if (index === 1) rankClass = 'rank-2';
+                    if (index === 2) rankClass = 'rank-3';
 
-        // 3. Check Tiebreaker
-        const tieInput = form.elements['Tiebreaker'];
-        const tieCard = tieInput.closest('.card');
-        if (!tieInput.value) {
-            tieCard.style.borderLeft = "5px solid #C60C30";
-            tieCard.style.backgroundColor = "#fff0f0";
-            if (!firstInvalid) firstInvalid = tieCard;
-        } else {
-            tieCard.style.borderLeft = "5px solid #C60C30"; // Keep accent color (or reset to preference)
-            tieCard.style.backgroundColor = "white";
-        }
+                    tbody.innerHTML += `
+                        <tr class="${rankClass}">
+                            <td>${index + 1}</td>
+                            <td style="font-weight:500">${player.name}</td>
+                            <td class="score-cell">${player.score}</td>
+                        </tr>
+                    `;
+                });
 
-        // IF ERRORS FOUND: Scroll to the first one and STOP.
-        if (firstInvalid) {
-            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            return; // STOP HERE. Do not send to Google.
-        }
-        // --- VALIDATION END ---
+                // --- 2. BUILD WINNERS PODIUM ---
+                if (players.length > 0) {
+                    const topScore = players[0].score;
+                    const winners = players.filter(p => p.score === topScore);
+                    
+                    const winnerDiv = document.getElementById('winner-list');
+                    winnerDiv.innerHTML = ''; 
+                    
+                    winners.forEach(w => {
+                        winnerDiv.innerHTML += `
+                            <div class="winner-name">${w.name}</div>
+                            <div class="winner-score">${w.score} Points</div><br>
+                        `;
+                    });
+                    document.getElementById('winners-podium').style.display = 'block';
+                }
 
-        // If we get here, everything is perfect. Proceed with submission.
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.innerText = "Locking in...";
+                // --- 3. BUILD ANSWER KEY (Updated for Column R!) ---
+                const answerBody = document.getElementById('answers-body');
+                answerBody.innerHTML = '';
 
-        loading.style.display = 'block';
-        loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // UPDATED LOOP: Now goes up to 17 (Column R)
+                let questionCount = 1;
+                for (let i = 2; i <= 17; i++) { 
+                    // Only show if there is actually a question in the header
+                    if (headers[i] && headers[i] !== "") {
+                        answerBody.innerHTML += `
+                            <tr class="answer-key-row">
+                                <td style="color:#888">${questionCount}</td>
+                                <td>${headers[i]}</td>
+                                <td style="text-align: right;" class="answer-correct">${answers[i]}</td>
+                            </tr>
+                        `;
+                        questionCount++;
+                    }
+                }
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => {
-                loading.style.display = 'none';
-                formContainer.style.display = 'none';
-                successMsg.style.display = 'block';
-                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
             })
             .catch(error => {
-                console.error('Error!', error.message);
-                submitButton.disabled = false;
-                submitButton.innerText = "Lock In My Picks";
-                loading.style.display = 'none';
-                alert("Something went wrong. Please try again!");
+                console.error('Error:', error);
+                document.getElementById('leaderboard-body').innerHTML = '<tr><td colspan="3">Error loading data.</td></tr>';
             });
-    });
-
-// Function to toggle between views
-function showSection(section) {
-    document.getElementById('picks-view').style.display = section === 'picks' ? 'block' : 'none';
-    document.getElementById('leaderboard-view').style.display = section === 'board' ? 'block' : 'none';
-    
-    document.getElementById('btn-picks').className = section === 'picks' ? 'nav-btn active' : 'nav-btn';
-    document.getElementById('btn-board').className = section === 'board' ? 'nav-btn active' : 'nav-btn';
-}
-
-// Function to fetch and render the leaderboard
-function loadLeaderboard() {
-    showSection('board');
-    const tbody = document.getElementById('leaderboard-body');
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Fetching live scores...</td></tr>';
-
-    fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-            // Slice the array to get only guests (adjust index if your sheet layout is different!)
-            let guests = data.slice(3); 
-            
-            let players = guests.map(row => {
-                return { name: row[0], score: row[1] === "" ? 0 : row[1] };
-            });
-
-            // Remove empty rows
-            players = players.filter(p => p.name && p.name !== "");
-
-            // SORT by Score (High to Low)
-            players.sort((a, b) => b.score - a.score);
-
-            // Render Table
-            tbody.innerHTML = '';
-            players.forEach((player, index) => {
-                let rankClass = '';
-                if (index === 0) rankClass = 'rank-1';
-                if (index === 1) rankClass = 'rank-2';
-                if (index === 2) rankClass = 'rank-3';
-
-                const row = `
-                    <tr class="${rankClass}">
-                        <td>${index + 1}</td>
-                        <td style="font-weight:500">${player.name}</td>
-                        <td class="score-cell">${player.score}</td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            tbody.innerHTML = '<tr><td colspan="3">Error loading scores. Try again.</td></tr>';
-        });
-}   
+    }
 </script>
-
-</body>
-</html>
